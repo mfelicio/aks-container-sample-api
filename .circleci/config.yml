@@ -1,0 +1,32 @@
+version: 2
+jobs:
+
+  build:
+    docker:
+      - image: paulinhu/netcore-docker-build
+    environment:
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    steps:
+      - checkout
+      - run: dotnet restore src
+      - run: dotnet build src
+      - run: dotnet test src/Sample.Tests
+
+      # Once unit-tests pass, create docker image
+      # For security purposes, circleci requires this step to isolate remote docker commands. 
+      # More info at: https://circleci.com/docs/2.0/building-docker-images/
+      - setup_remote_docker
+
+      - run: |
+          chmod a+x ./tools/*.sh
+          ./tools/create-docker-image.sh
+          docker login $DOCKER_REGISTRY_URI -u $DOCKER_REGISTRY_SERVER_USERNAME -p $DOCKER_REGISTRY_SERVER_PASSWORD
+          docker push $DOCKER_IMAGE_NAME_WITH_REGISTRY
+
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
