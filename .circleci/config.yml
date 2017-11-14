@@ -51,6 +51,6 @@ workflows:
     jobs:
       - build
 
-      - deploy_onto_kube
+      - deploy_onto_kube:
           requires:
             - build
