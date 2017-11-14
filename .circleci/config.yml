@@ -25,7 +25,7 @@ jobs:
           docker login $DOCKER_REGISTRY_URI -u $DOCKER_REGISTRY_SERVER_USERNAME -p $DOCKER_REGISTRY_SERVER_PASSWORD
           docker push $DOCKER_IMAGE_NAME_WITH_REGISTRY
 
- deploy_onto_kube:
+  deploy_onto_kube:
     docker:
       - image: azuresdk/azure-cli-python
     
@@ -41,6 +41,9 @@ jobs:
       # CREATE AKS CLUSTER, THEN DELETE SSH KEY
       - run: az provider register -n Microsoft.ContainerService
       - run: az aks install-cli
+      - run: az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME
+      - run: kubectl get nodes
+
 
 workflows:
   version: 2
