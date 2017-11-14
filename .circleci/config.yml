@@ -41,8 +41,9 @@ jobs:
       # CREATE AKS CLUSTER, THEN DELETE SSH KEY
       - run: az provider register -n Microsoft.ContainerService
       - run: az aks install-cli
-      - run: az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME
-      - run: kubectl get nodes
+      - run: |
+              az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME
+              kubectl get nodes
 
 
 workflows:
