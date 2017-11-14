@@ -25,9 +25,29 @@ jobs:
           docker login $DOCKER_REGISTRY_URI -u $DOCKER_REGISTRY_SERVER_USERNAME -p $DOCKER_REGISTRY_SERVER_PASSWORD
           docker push $DOCKER_IMAGE_NAME_WITH_REGISTRY
 
+ deploy_onto_kube:
+    docker:
+      - image: azuresdk/azure-cli-python
+    
+    steps:
+      # LOGIN ONTO AZURE WITH EXISTING SERVICE PRINCIPAL
+      - run: az login --service-principal -u $SERVICE_PRINCIPAL --password $SERVICE_PRINCIPAL_PASS --tenant $SERVICE_TENANT
+      
+      # DOWNLOAD SSH KEY
+      - run: az provider register -n Microsoft.KeyVault
+      - run: az keyvault secret download --vault-name $KEYVAULT_NAME --name cluster-ssh --file ./cluster-ssh
+      - run: az keyvault secret download --vault-name $KEYVAULT_NAME --name cluster-ssh-pub --file ./cluster-ssh.pub
+
+      # CREATE AKS CLUSTER, THEN DELETE SSH KEY
+      - run: az provider register -n Microsoft.ContainerService
+      - run: az aks install-cli
 
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
+
+      - deploy_onto_kube
+          requires:
+            - build
