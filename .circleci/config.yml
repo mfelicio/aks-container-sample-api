@@ -32,19 +32,14 @@ jobs:
     steps:
       # LOGIN ONTO AZURE WITH EXISTING SERVICE PRINCIPAL
       - run: az login --service-principal -u $SERVICE_PRINCIPAL --password $SERVICE_PRINCIPAL_PASS --tenant $SERVICE_TENANT
-      
-      # DOWNLOAD SSH KEY
-      - run: az provider register -n Microsoft.KeyVault
-      - run: az keyvault secret download --vault-name $KEYVAULT_NAME --name cluster-ssh --file ./cluster-ssh
-      - run: az keyvault secret download --vault-name $KEYVAULT_NAME --name cluster-ssh-pub --file ./cluster-ssh.pub
 
       # CREATE AKS CLUSTER, THEN DELETE SSH KEY
       - run: az provider register -n Microsoft.ContainerService
       - run: az aks install-cli
-      - run: |
-              az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME
-              kubectl get nodes
+      - run: az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME
+      - run: kubectl create -f src/container-api.yml
 
+      # either CREATE or update with YML
 
 workflows:
   version: 2
