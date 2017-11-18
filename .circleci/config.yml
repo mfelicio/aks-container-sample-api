@@ -37,7 +37,9 @@ jobs:
       - run: az provider register -n Microsoft.ContainerService
       - run: az aks install-cli
       - run: az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME
-      - run: kubectl create -f src/container-api.yml
+      # check whether a create needed to be used instead for the first deploy
+      #- run: kubectl create -f src/container-api.yml
+      - run: kubectl rolling-update container-api -f src/container-api.yml
 
       # either CREATE or update with YML
 

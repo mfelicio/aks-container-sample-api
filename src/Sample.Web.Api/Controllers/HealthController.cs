@@ -7,7 +7,7 @@ namespace Sample.Web.Api.Controllers
         [HttpGet("health")]
         public IActionResult IsHealthy()
         {
-            return Ok();
+            return Ok(new HealthStatus());
         }
     }
 }
