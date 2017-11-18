@@ -1,4 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Sample.Web.Api.Models
 {
