@@ -1,8 +1,12 @@
 steps:
 
 - bash: |
-    curl -L https://azurecliprod.blob.core.windows.net/install.py -o install.py
-    printf "/usr/azure-cli\n/usr/bin" | python install.py
+    apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893
+    apt-get install -y --no-install-recommends
+    apt-transport-https
+    apt-get update
+    apt-get install -y --no-install-recommends
+    azure-cli
     az --version
     docker --version
   displayName: Install Azure Cli
