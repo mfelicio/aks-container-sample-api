@@ -1,6 +1,9 @@
 steps:
 
 - bash: echo current dir is $PWD and agent homeDir is $(agent.homeDirectory) and default dir is $(system.defaultWorkingDirectory)
+        ls
+        ls $(agent.homeDirectory)
+        ls $(system.defaultWorkingDirectory)
   displayName: Working directory
   
 - bash: |
@@ -12,3 +15,5 @@ steps:
   env:
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
     DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    
+    
