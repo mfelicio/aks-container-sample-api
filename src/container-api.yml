@@ -7,11 +7,11 @@ spec:
   template:
     metadata:
       labels:
-        app: container-api-app
+        app: sample-web-app
     spec:
       containers:
         - name: container-api
-          image: akseastus.azurecr.io/sample/container-api
+          image: pinkteam.azurecr.io/samplewebapp
           ports:
             - containerPort: 80
       imagePullSecrets:

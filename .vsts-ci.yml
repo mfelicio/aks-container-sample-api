@@ -43,8 +43,13 @@ phases:
     workingDirectory: $(system.defaultWorkingDirectory)
   
   - bash: |
-      echo Printing azure-cli version
-      az --version
+      echo Deploying App to kubernetes cluster
+      #az --version
+      #az login
+      az account set --subcription $AZURE_SUBSCRIPTION_ID 
+      az provider register -n Microsoft.ContainerService
+      az aks install-cli
+      az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME
     
 #- phase: Deploy_Windows
 #  queue: Hosted VS2017 (Hosted VS2017)
