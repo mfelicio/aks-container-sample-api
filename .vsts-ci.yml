@@ -2,6 +2,9 @@ phases:
 
 - phase: Build_And_Package_Linux
   #queue: Hosted Linux Preview (Hosted Linux Preview)
+  queue:
+    demands:
+    - agent.name -equals Hosted Linux Preview 10
   steps:
   - script: echo hello from Linux
   
@@ -28,8 +31,12 @@ phases:
       docker login $DOCKER_REGISTRY_URI -u $DOCKER_REGISTRY_SERVER_USERNAME -p $DOCKER_REGISTRY_SERVER_PASSWORD
       docker push $DOCKER_IMAGE_NAME_WITH_REGISTRY
     displayName: Push Docker Image
-    workingDirectory: $(agent.homeDirectory)
-
+    workingDirectory: $(system.defaultWorkingDirectory)
+  
+  - bash: |
+      echo Printing azure-cli version
+      az --version
+    
 #- phase: Deploy_Windows
 #  queue: Hosted VS2017 (Hosted VS2017)
 #  steps:
