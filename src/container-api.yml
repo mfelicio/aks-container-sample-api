@@ -15,7 +15,7 @@ spec:
         - name: sample-web-container
           image: pinkteam.azurecr.io/samplewebapp
           ports:
-            - containerPort: 5000
+            - containerPort: 80
       imagePullSecrets:
         - name: acr-credentials
 ---
@@ -26,6 +26,6 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  - port: 81
+  - port: 80
   selector:
     app: sample-web-app
