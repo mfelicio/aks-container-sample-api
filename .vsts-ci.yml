@@ -5,6 +5,7 @@ steps:
         ls
         echo $PATH
         echo printing azure-cli version
+        azure --version
         az --version
   workingDirectory: $(system.defaultWorkingDirectory)
   displayName: Working directory
