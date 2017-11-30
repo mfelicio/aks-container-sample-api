@@ -1,6 +1,7 @@
 steps:
 
-- bash: echo current dir is $PWD and agent homeDir is $(agent.homeDirectory) and default dir is $(system.defaultWorkingDirectory)
+- bash: |
+        echo current dir is $PWD and agent homeDir is $(agent.homeDirectory) and default dir is $(system.defaultWorkingDirectory)
         ls
         ls $(agent.homeDirectory)
         ls $(system.defaultWorkingDirectory)
@@ -12,6 +13,7 @@ steps:
     dotnet test src/Sample.Tests
     dotnet publish src/Sample.Web.Api/Sample.Web.Api.csproj -c Release -f netcoreapp2.0
   displayName: Build, Test, Publish
+  workingDirectory: $(agent.homeDirectory)
   env:
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
     DOTNET_CLI_TELEMETRY_OPTOUT: 1
