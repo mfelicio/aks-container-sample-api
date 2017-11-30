@@ -1,12 +1,18 @@
 steps:
 
 - bash: |
-        echo current dir is $PWD
-        ls
-        echo $PATH
-        echo printing azure-cli version
-        azure --version
-        az --version
+    apt-get update -y && apt-get install -y python libssl-dev libffi-dev python-dev build-essential
+    curl -L https://azurecliprod.blob.core.windows.net/install.py -o install.py
+    printf "/usr/azure-cli\n/usr/bin" | python install.py
+    az --version
+  displayName: Install Azure Cli
+
+- bash: |
+    echo current dir is $PWD
+    ls
+    echo $PATH
+    echo printing azure-cli version
+    az --version
   workingDirectory: $(system.defaultWorkingDirectory)
   displayName: Working directory
   
