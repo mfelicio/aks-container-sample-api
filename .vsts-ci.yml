@@ -50,7 +50,7 @@ phases:
       az provider register -n Microsoft.ContainerService
       az aks install-cli
       az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME
-      kubectl create -f src/container-api.yml
+      kubectl apply -f src/container-api.yml
       #kubectl rolling-update container-api -f src/container-api.yml
     
 #- phase: Deploy_Windows
