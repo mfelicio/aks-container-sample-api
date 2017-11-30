@@ -3,6 +3,7 @@ steps:
 - bash: |
         echo current dir is $PWD
         ls
+        echo $PATH
         echo printing azure-cli version
         az --version
   workingDirectory: $(system.defaultWorkingDirectory)
