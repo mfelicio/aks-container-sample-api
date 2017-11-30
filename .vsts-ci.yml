@@ -52,7 +52,8 @@ phases:
       az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME
       kubectl apply -f src/container-api.yml
       #kubectl rolling-update container-api -f src/container-api.yml
-    
+    displayName: Deploy to container
+          
 #- phase: Deploy_Windows
 #  queue: Hosted VS2017 (Hosted VS2017)
 #  steps:
