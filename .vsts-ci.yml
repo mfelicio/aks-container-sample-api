@@ -1,10 +1,9 @@
 steps:
 
 - bash: |
-        echo current dir is $PWD and agent homeDir is $(agent.homeDirectory) and default dir is $(system.defaultWorkingDirectory)
+        echo current dir is $PWD
         ls
-        ls $(agent.homeDirectory)
-        ls $(system.defaultWorkingDirectory)
+  workingDirectory: $(system.defaultWorkingDirectory
   displayName: Working directory
   
 - bash: |
@@ -13,9 +12,15 @@ steps:
     dotnet test src/Sample.Tests
     dotnet publish src/Sample.Web.Api/Sample.Web.Api.csproj -c Release -f netcoreapp2.0
   displayName: Build, Test, Publish
-  workingDirectory: $(agent.homeDirectory)
+  workingDirectory: $(system.defaultWorkingDirectory)
   env:
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
     DOTNET_CLI_TELEMETRY_OPTOUT: 1
     
-    
+- bash: |
+    cp src/Dockerfile src/Sample.Web.Api/bin/Release/netcoreapp2.0/publish/
+    docker build --rm --no-cache -t $DOCKER_IMAGE_NAME_WITH_REGISTRY src/Sample.Web.Api/bin/Release/netcoreapp2.0/publish/
+    docker login $DOCKER_REGISTRY_URI -u $DOCKER_REGISTRY_SERVER_USERNAME -p $DOCKER_REGISTRY_SERVER_PASSWORD
+    docker push $DOCKER_IMAGE_NAME_WITH_REGISTRY
+  displayName: Push Docker Image
+  workingDirectory: $(agent.homeDirectory)
