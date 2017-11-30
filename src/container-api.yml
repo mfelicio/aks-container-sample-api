@@ -15,7 +15,7 @@ spec:
           ports:
             - containerPort: 80
       imagePullSecrets:
-        - name: aksregistry
+        - name: acr-credentials
 ---
 apiVersion: v1
 kind: Service
