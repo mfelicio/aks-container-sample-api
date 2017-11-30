@@ -4,6 +4,8 @@ metadata:
   name: container-api
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
