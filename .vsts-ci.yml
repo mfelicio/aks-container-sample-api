@@ -1,7 +1,7 @@
 phases:
 
 - phase: Build_And_Package_Linux
-  queue: Hosted Linux Preview
+  queue: Hosted Linux Preview (Hosted Linux Preview)
   steps:
   - script: echo hello from Linux
   
@@ -31,6 +31,6 @@ phases:
     workingDirectory: $(agent.homeDirectory)
 
 - phase: Deploy_Windows
-  queue: Hosted VS2017
+  queue: Hosted VS2017 (Hosted VS2017)
   steps:
   - script: az --version
