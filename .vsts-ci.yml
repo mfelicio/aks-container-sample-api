@@ -1,41 +1,36 @@
-steps:
+phases:
 
-- bash: |
-    echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | tee /etc/apt/sources.list.d/azure-cli.list
-    apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893
-    apt-get install -y --no-install-recommends
-    apt-transport-https
-    apt-get update
-    apt-get install -y --no-install-recommends
-    azure-cli
-    az --version
-    docker --version
-  displayName: Install Azure Cli
-
-- bash: |
-    echo current dir is $PWD
-    ls
-    echo $PATH
-    echo printing azure-cli version
-    az --version
-  workingDirectory: $(system.defaultWorkingDirectory)
-  displayName: Working directory
+- phase: Build and Package (Linux)
+  queue: Hosted Linux Preview
+  steps:
+  - script: echo hello from Linux
   
-- bash: |
-    dotnet restore src,
-    dotnet build src
-    dotnet test src/Sample.Tests
-    dotnet publish src/Sample.Web.Api/Sample.Web.Api.csproj -c Release -f netcoreapp2.0
-  displayName: Build, Test, Publish
-  workingDirectory: $(system.defaultWorkingDirectory)
-  env:
-    DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-    DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  - bash: |
+      echo current dir is $PWD
+      ls
+    workingDirectory: $(system.defaultWorkingDirectory)
+    displayName: Print Working directory
     
-- bash: |
-    cp src/Dockerfile src/Sample.Web.Api/bin/Release/netcoreapp2.0/publish/
-    docker build --rm --no-cache -t $DOCKER_IMAGE_NAME_WITH_REGISTRY src/Sample.Web.Api/bin/Release/netcoreapp2.0/publish/
-    docker login $DOCKER_REGISTRY_URI -u $DOCKER_REGISTRY_SERVER_USERNAME -p $DOCKER_REGISTRY_SERVER_PASSWORD
-    docker push $DOCKER_IMAGE_NAME_WITH_REGISTRY
-  displayName: Push Docker Image
-  workingDirectory: $(agent.homeDirectory)
+  - bash: |
+      dotnet restore src,
+      dotnet build src
+      dotnet test src/Sample.Tests
+      dotnet publish src/Sample.Web.Api/Sample.Web.Api.csproj -c Release -f netcoreapp2.0
+    displayName: Build, Test, Publish
+    workingDirectory: $(system.defaultWorkingDirectory)
+    env:
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      
+  - bash: |
+      cp src/Dockerfile src/Sample.Web.Api/bin/Release/netcoreapp2.0/publish/
+      docker build --rm --no-cache -t $DOCKER_IMAGE_NAME_WITH_REGISTRY src/Sample.Web.Api/bin/Release/netcoreapp2.0/publish/
+      docker login $DOCKER_REGISTRY_URI -u $DOCKER_REGISTRY_SERVER_USERNAME -p $DOCKER_REGISTRY_SERVER_PASSWORD
+      docker push $DOCKER_IMAGE_NAME_WITH_REGISTRY
+    displayName: Push Docker Image
+    workingDirectory: $(agent.homeDirectory)
+
+- phase: Deploy (Windows)
+  queue: Hosted VS2017
+  steps:
+  - script: az --version
