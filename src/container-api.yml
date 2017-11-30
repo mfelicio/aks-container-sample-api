@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: container-api
+  name: sample-web-deployment
 spec:
   replicas: 2
   strategy:
@@ -12,20 +12,20 @@ spec:
         app: sample-web-app
     spec:
       containers:
-        - name: container-api
+        - name: sample-web-container
           image: pinkteam.azurecr.io/samplewebapp
           ports:
-            - containerPort: 80
+            - containerPort: 5000
       imagePullSecrets:
         - name: acr-credentials
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: container-api
+  name: sample-web-lb
 spec:
   type: LoadBalancer
   ports:
-  - port: 80
+  - port: 81
   selector:
-    app: container-api-app
+    app: sample-web-app
