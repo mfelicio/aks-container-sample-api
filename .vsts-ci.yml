@@ -2,11 +2,20 @@ phases:
 
 - phase: Build_And_Package_Linux
   #queue: Hosted Linux Preview (Hosted Linux Preview)
-  queue:
-    demands:
-    - agent.name -equals Hosted Linux Preview 10
+  #queue:
+  #  demands:
+  #  - agent.name -equals Hosted Linux Preview 10
   steps:
-  - script: echo hello from Linux
+  - bash: |
+      echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | tee /etc/apt/sources.list.d/azure-cli.list
+      apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893
+      apt-get install -y --no-install-recommends apt-transport-https
+      apt-get update
+      apt-get install -y --no-install-recommends azure-cli
+      echo Printing azure-cli version
+      az --version
+    displayName: Install Azure Cli
+    workingDirectory: $(system.defaultWorkingDirectory)
   
   - bash: |
       echo current dir is $PWD
