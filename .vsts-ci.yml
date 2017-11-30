@@ -1,9 +1,8 @@
 steps:
 
 - bash: |
-    #apt-get update -y && apt-get install -y python libssl-dev libffi-dev python-dev build-essential
-    #curl -L https://azurecliprod.blob.core.windows.net/install.py -o install.py
-    #printf "/usr/azure-cli\n/usr/bin" | python install.py
+    curl -L https://azurecliprod.blob.core.windows.net/install.py -o install.py
+    printf "/usr/azure-cli\n/usr/bin" | python install.py
     az --version
     docker --version
   displayName: Install Azure Cli
