@@ -45,7 +45,7 @@ phases:
   - bash: |
       echo Deploying App to kubernetes cluster
       #az --version
-      #az login
+      az login --service-principal -u $SERVICE_PRINCIPAL_ID -p $SERVICE_PRINCIPAL_PWD -t $TENANT
       az account set --subcription $AZURE_SUBSCRIPTION_ID 
       az provider register -n Microsoft.ContainerService
       az aks install-cli
