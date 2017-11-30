@@ -3,7 +3,7 @@ steps:
 - bash: |
         echo current dir is $PWD
         ls
-  workingDirectory: $(system.defaultWorkingDirectory
+  workingDirectory: $(system.defaultWorkingDirectory)
   displayName: Working directory
   
 - bash: |
