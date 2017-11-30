@@ -1,6 +1,6 @@
 phases:
 
-- phase: Build and Package (Linux)
+- phase: Build_And_Package_Linux
   queue: Hosted Linux Preview
   steps:
   - script: echo hello from Linux
@@ -30,7 +30,7 @@ phases:
     displayName: Push Docker Image
     workingDirectory: $(agent.homeDirectory)
 
-- phase: Deploy (Windows)
+- phase: Deploy_Windows
   queue: Hosted VS2017
   steps:
   - script: az --version
